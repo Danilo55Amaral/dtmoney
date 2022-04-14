@@ -33,6 +33,39 @@
             font-size: 64px;
             color: #8257e6;
         `
+    Ps- Vou colocar meu favicon indo ao arquivo index.html  e vou utilizar a tag link 
+        <link rel="shortcut icon" type="image/png" href="favicon.png" />
+
             
-            
+            Criando estilos Globais
+
+    Podemos utilizar o styled-component para fazer estilos globais em nossa aplicação
+    Dentro da pasta assets eu criei uma pasta chamada styles e dentro de styles eu criei 
+    um arquivo chamado global.ts por não se tratar de um componente eu não preciso usar a 
+    extensão tsx.
+
+    Para definir meus estilos globais eu vou importar o seguinte:
+            import { createGlobalStyle } from "styled-components";
+    após isso eu vou criar utiizando o styled component todos os meus estilos globais.
+        Ps- -webkit-font-smoothing: antialiased; vai deixar a fonte mais nitida
+
+    Vou importar como um componente meu GlobalStyle dentro do meu App component.
+
+    Ps- uma boa técnica para adaptar a interface a vario tamanhos de tela diferente é utilizar o 
+    REM - 1 rem = 16px
+
+    PS- quando configuramos a fonte para varios tamanhos de tela, utilizamos o % por que facilita 
+    na adaptação de tela para o usuario caso ele queira aumentar ou diminuir o tamanho da fonte.
+
+    PS- configurações para tudo que tiver desabilitado:
+        [disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    PS - importei a fonte Popins do google fontes via link e coloquei no meu index.html
+    deixei o trecho abaixo em cima por que vai ser carregado antes e vai aumentar a velocidade 
+    de carregamento em cerca de 25%.
+    depois eu definir minha fonte dentro do meu global.ts
+
 */
