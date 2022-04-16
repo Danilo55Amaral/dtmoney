@@ -106,6 +106,174 @@
                 color: var(--text-title);
             }
     PS- withdraw = retirada /  deposit = deposito
+
+
+                
+                CONSUMINDO API
+
+        Existem algumas ferramentas que conseguem utilizar no front end para simular API's 
+        criam api´s que são ficticias até o back end ficar pronto. 
+        Essas ferramentas são utilizadas em ambientes de desenvolvimento e para testes, em 
+        ambiente de produção essas ferramentas jamais serão utilizadas.
+        
+        Em ambiente de produção é necssário realmente um back end funcionando para servir os  
+        dasos. 
+
+        São 3 ferramentas que são usadas:
+                Json server 
+            permite que ao criar um arquivo Json com estrutura de um objeto cada 
+            chave do objeto ele vai converter numa rota da aplicação. porém para usar é necessário
+            executar fora da aplicação ou seja uma execução a parte. 
+
+                MirageJs 
+            Com isso dá para contruir uma api fake dentro do front-end, ele tem banco de dados 
+            integrado, da para fazer relacionamento, tem varias outras coisas legais também.
+            
+                MSW 
+            Ele vao mocar os dados, é semelhante ao mirageJs porém faz menas coisas.
+
+
+
+        Configurando o MirageJS
+
+    Vou utilizar o useEffect passando um fetch para a rota,nesse caso vou utilizar a rota da minha 
+    propria aplicação http://localhost:3000/ , passei na rota também api e transactions, vou pegar
+    a resposta dessa requisição e vou converter para json, vou  pegar os dados e dá um console.
+
+                useEffect(() => {
+                    fetch('http://http://localhost:3000/api/transactions')
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                }, [])
+
+
+    Instalei o miragejs com o seguinte comando abaixo:
+        npm add miragejs
+
+    Após isso dentro do meu main.tsx principal da minha aplicaçao eu vou importar o createServer 
+        import { createServer } from 'miragejs';
+
+    Vou chamar a função createServer e depois vou definir as rotas que vou ter na api ficticia 
+    veja abaixo:
+
+                createServer({
+                routes() {
+                    this.namespace = 'api';
+
+                    this.get('/transactions', () => {
+                    return [
+                        {
+                        id: 1,
+                        title: 'Transaction 1',
+                        amount: 400,
+                        type: 'deposit',
+                        category: 'Food',
+                        createdAt: new Date()
+                        }
+                    ]
+                    })
+                }
+                })
+
+
+Isso é uma boa estratégia para simular um falso back end e poder desenvolver o front antes mesmo
+do back verdadeiro está pronto, isso ajuda muito no desenvolvimento.
+
+
+        CONFIGURANDO CLIENTE DO AXIOS
+
+
+    Vou utilizar outra biblioteca ao invés do fetch em minhas requisições por alguns motivos
+    o fecth precisa que coloque todo o endereço da aplicação em cada requisição que for feita 
+    outro fator é que toda vez que for feita uma requisição temos que transformar nossa resposta 
+    em json.
+
+    Com  o axios dá para interceptar requisições e respostas para a nossa api, conseguimos adicionar
+    uma regra no axios que a cada requisição enviada seja interceptada antes de chegar ao back end 
+    e mudar algum dado, também consigo interceptar todas as respostas também desssa maneira.
+
+    Instalando o axios:
+       npm add axios
+
+    Após instalado eu crio uma pasta para colocar o axios dentro, vou chamar de services
+    vou criar um arquivo api.ts, essa pasta tem a finalidade de ser o servicos de dados ou seja 
+    todos os lugares onde posso buscar dados, enviar dados, banco de dados, api externa, eu vou 
+    colocar dentro dessa pasta.
+
+    Dentro desse arquivo eu importo o axios, em seguida eu crio uma constante chamada api e vou 
+    passar axios.create ou seja eu crio uma instancia do axios, assim eu vou setar umas informações 
+    padrão para todas as requisições que eu for fazer para a api, vou setar o baseUrl e vou passar 
+    o endereço que se repete em todas as minhas requisições. 
+
+                import axios from "axios";
+
+                export const api = axios.create({
+                    baseURL: 'http://http://localhost:3000/api',
+                })
     
+    Após isso eu troco o fetch por api.get e importo lá onde estou consumindo, também 
+    posso remover a conversão da resposta para json pois eu não preciso mais. 
+
+                import { api } from "../../services/api";
+
+                export function TransactionsTable() {
+                    useEffect(() => {
+                        api.get('transactions')
+                        .then(response => console.log(response.data))
+                    }, []);
+                    
+    
+
+        CONFIGURANDO MODAL DE CRIAÇÃO  E UTILIZANDO PROPS
+
+    Para isso vamos utilizar uma biblioteca do React chamada react-modal ela traz algumas funcionalidades
+    de modal já prontas.
+    para instalar a biblioteca: 
+                npm add react-modal
+
+    Como o botão que vai abrir o modal está no header vou criar meu modal dentro do header.
+    para utilizar essa biblioteca eu vou ter que criar um estado para definir se o meu modal está 
+    aberto ou fechado, tem uma função para abbrir o modal e uma para fechar o modal, e um botão que 
+    executa a abertura do modal, e o componente modal que vem diretamente da lib instalada.
+    mais detalhes em   github.com/reactjs/react-modal
+
+    PS- quando criar uma função para ser executada a partir da ação do usuario sempre vou iniciar
+    essa função com handle.
+
+    Preciso importar o Modal: 
+                    import Modal from "react-modal";
+
+    Se ele der problema por causa do typeScript basta instalar o comando:
+            npm add @types/react-modal -D
+
+    Depois importamos nosso modal como se fosse um componente, pode ser em qualquer local.
+    Dentro do modal eu devo passar a propriedade isOpen com o meu estado para o modal poder abir.
+    Também é necessário passar a propriedade onRequestClose passando a função que fecha meu modal.
+
+    Dica legal: 
+        vou pegal o meu modal e vou coplocar dentro de App.tsx, também vou fazer isso 
+        com o estado e as funções. Vou utilizar o props para passar os dados do meu onClick 
+        dentro da minha interface eu defino uma propriedade chamada onOpenNewTransactionModal
+        que vai retornar um void.
+        e dentro do paprametro do meu componente ao invés de utilizar props posso desestructurar 
+        e passar apenas minha propriedade especifica.
+
+                    interface HeaderProps {
+                        onOpenNewTransactionModal: () => void;
+                    }
+
+                    export function Header( {onOpenNewTransactionModal }: HeaderProps)
+
+       Depois eu vou exatamente onde eu estou chamando o componente Header e vou passar como 
+       proriedade onOpenNewTransactionModal passando exatamente a função que eu quero executar 
+
+       <Header onOpenNewTransactionModal={handleOpenNewTransactionModal} />
+
+        Para finalizar e recomendavel definir que o modal seja carregado no root da aplicação 
+                        Modal.setAppElement('#root');
+
+        
+
+
 
 */
