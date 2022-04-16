@@ -88,7 +88,24 @@
 
     PS- quando utilizamos um hover e colocamos o filter podemos optar por varios tipos de animações css.
 
-    
+
+                COMPONENTE: SUMMARY
+
+    1- Crie um componente Dashboard dentro desse compomente eu vou ter minha área de 
+    resumo financeiro e também tenho minha tabela de transação.
+
+    2- Sempre coloco meu Container em volta de tudo que eu criei com o styled component
+
+    3- vou utilizar a tag header para fizar meu titulo.
+
+
+                COMPONENTE: TransactionsTable 
+
+        Quando o td é o primeiro vou colocar a cor de fundo seguinte.
+            &:first-child {
+                color: var(--text-title);
+            }
+    PS- withdraw = retirada /  deposit = deposito
     
 
 */
