@@ -68,4 +68,27 @@
     de carregamento em cerca de 25%.
     depois eu definir minha fonte dentro do meu global.ts
 
+                COMPONENTE HEADER 
+
+    Aqui vou optar por criar uma pasta chamada Header e criar meu componente header
+    dentro de um arquivo index.jsx.
+
+    Eu posso importar arquivos de imagem dentro do meu componente como import normalmente 
+    e depois chamar como variavel.
+            import logoImg from "../../assets/logo.svg";
+
+            <img src={logoImg} alt="dt money" /> 
+
+    Para utilizar o styled component eu vou criar um arquivo chamado styles.ts e foi por 
+    isso que eu criei uma pasta para o meu componente. 
+    Criei dois container um deles vou chamar de content(conteudo) e nesse ultimo eu vou centralizar 
+    as coisas independente da tela.
+
+    PS- 1rem equivale ao tamanho do fonte-size do root do style global.
+
+    PS- quando utilizamos um hover e colocamos o filter podemos optar por varios tipos de animações css.
+
+    
+    
+
 */
