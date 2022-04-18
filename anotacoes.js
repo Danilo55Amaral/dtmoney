@@ -274,6 +274,45 @@ do back verdadeiro está pronto, isso ajuda muito no desenvolvimento.
 
         
 
+                        COMPONENTE: NewTransactionModal
 
+    
+        Vou criar um componente chamado NewTransactionModal em forma de pasta.
+        Dentro desse meu novo componente eu trouxe o meu modal que estava em app.tsx e passei 
+        via props isOpen e onRequestClose.
+
+
+                        ESTRUTURA DO FIRMULÁRIO 
+
+        Vou criar meu formulário dentro de  NewTransactionModal e no style eu vou criar um 
+        container como fiz nos outros componentes e nesse container eu já passo meu form, 
+        com isso eu não preciso criar a tag form no meu código tsx, quando eu passar o container 
+        ele já vai trazer o form.
+
+        Para estilizar o modal existem duas propriedades tem na documentação e vamos utilizar 
+        vou passar essas propriedades para meu modal.
+                    
+                    overlayClassName="react-modal-overlay"
+                    className="react-modal-content"
+
+        Vou estilizar meu modal dentro da estilização global do meu projeto, pois 
+        todos os modais dessa aplicação são semelhantes.
+        Dentro do meu global.ts eu vou estilizar essas duas propriedades que são 
+        classes do html.
+
+        Todo input anterior vai ter um margim-top de 1rem, vai dar um distanciamento.
+
+                      & + input {
+                            margin-top: 1rem;
+                        }
+
+        quando passar o mouse por cima vai dá um leve efeito de transparencia.
+
+                            &:hover {
+                                filter: brightness(0.9);
+                            }
+        
+            
+        
 
 */
