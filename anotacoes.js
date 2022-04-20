@@ -313,6 +313,24 @@ do back verdadeiro está pronto, isso ajuda muito no desenvolvimento.
                             }
         
             
+                        
+
+                    BOTÕES DE TIPO 
+
         
+        Dentro do meu componente NewTransactionModal eu vou criar um novo container dentro do 
+        meu styles e vou chamar de TransactionTypeContainer. Vou colocar esse container entre 
+        os meus inputs. Esa container será uma div.
+
+        Dentro desse Container eu criei dois botões.
+
+        PS- Existe um pacote chamado polished esse pacote tem um monte de função helpes que conseguimos 
+        modificar as cores, eu instalo o pacote rodando o comando abaixo e depois eu importo 
+        dentro do meu styles e utilizo a função desejada; nesse caso usei a função chamda darken que 
+        escurece uma cor.
+                npm add polished
+
+        ${darken(0.1, '#d7d7d7')};  eu quero escurecer em 10% a cor mensionada.
+
 
 */
