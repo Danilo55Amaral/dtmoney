@@ -333,4 +333,70 @@ do back verdadeiro está pronto, isso ajuda muito no desenvolvimento.
         ${darken(0.1, '#d7d7d7')};  eu quero escurecer em 10% a cor mensionada.
 
 
+                            FUNCIONALIDADES DOS BORTÕES DE TIPO 
+
+        
+      Eu vou criar um estado em NewTransactionModal e vou chamar de type, verificando em nossa api 
+      o type pode ser deposit ou withdraw.
+      No meu useState eu vou passar deposit no meu estado inicial,  dentro do meu button de entrada 
+      eu vou definir um onClick que vai mudar o type, como se trata de uma função bem pequena eu posso 
+      colocar ela dentro do onClick como uma arow passando o deposit e no botão de saída eu passo o withdraw.
+    
+      Eu vou substituir o meu button html por um componente no styled chamado RadioBox.
+      Feito isso eu posso criar propriedades para esse meu componente, vou criar uma propriedade 
+      chamada isActive, como estamos dentro do typeScript teremos que criar uma interface dentro de
+      styles.ts.v depois eu passo essa interface dentro do componente do proprio styled component 
+                    export const RadioBox = styled.button<RadioBoxProps>`
+
+    Um dos recursos mais interessantes do styled component, no trecho de código abaixo eu vou mudar 
+    a cor do bacground toda vez que a  função isActive for true, eu faço uma interpolação, eu vou passar 
+    uma função dentro dessa interpolação, e automaticamente o styled faz com que eu possa passar todas as 
+    propriedades desejadas via props, no cósido abaixo eu definir que se a propriedade isActive for true 
+    eu mudo a cor do background para a mensionada se não eu deixo como transparent.
+
+                            background: ${(props) => props.isActive ? '#eee' : 'transparent'};
+                            
+                            
+
+                        CORES DO BOTÕES 
+
+    Posso passar propeedades dentro do meu componente styled e nessas propriedades eu posso definir cores.
+    lembrando que nesse componente styled eu utilizei uma interface typeScript e por isso eu preciso definir 
+    essa propriedade.
+
+                    <RadioBox
+                        type="button"
+                        onClick={() => { setType('deposit'); }}
+                        isActive={type === 'deposit'}
+                        activeColor='green'
+                    >
+
+
+                interface RadioBoxProps {
+                    isActive: boolean;
+                    activeColor: 'green' | 'red';
+
+    Eu posso criar uma variavel para essas cores: 
+
+                        const colors = {
+                            green: '#33CC95',
+                            red: '#E52E40'
+                        };
+
+    Vou ter que adaptar meu background para ele buscar uma dessas duas cores na variavel:
+
+                        background: ${(props) => props.isActive
+                            ? colors[props.activeColor] 
+                            : 'transparent'
+                        };  
+}
+
+Dentro do polished eu posso importar o transparentize e aplicar deixando minhas cores mais transparentes
+eu aplico e passo a porcentagem de transparencia abaixo eu definir 90%.
+
+        transparentize(0.9,colors[props.activeColor])
+
+PS- a vantegem de utilizar o transparentize ao invez do opacity no proprio css é que dessa forma eu vou aplicar 
+apenas no meu bacground.   
+
 */
