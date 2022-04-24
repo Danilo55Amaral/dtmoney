@@ -397,6 +397,61 @@ eu aplico e passo a porcentagem de transparencia abaixo eu definir 90%.
         transparentize(0.9,colors[props.activeColor])
 
 PS- a vantegem de utilizar o transparentize ao invez do opacity no proprio css é que dessa forma eu vou aplicar 
-apenas no meu bacground.   
+apenas no meu bacground.  
+
+
+                SALVANDO DADOS NO FORM 
+
+    Agora veremos como salvar os estados dos inputs no componente, eu criei uma função chamada 
+    handleCreateNewTransaction , o handle na função é um pattern que significa que a função virá 
+    através da ação de um usuario. 
+
+    Essa função é disparada através do subimit do formulário.
+        onSubmit={handleCreateNewTransaction}
+    Eu criei a função dentro de NewTransactionModal.
+
+    PS- Toda vez que eu der enter no input essa função será executada.
+
+    PS- Por padrão todo formulário no html quando o sumit é feito ele recarrega toda a página 
+    podemos previnir esse funcionamento padrão do html, para isso eu posso passar como parametro 
+    na minha função o event que é padrão e vou tipar ele passando o FormEvent, feito isso eu consigo 
+    chamar o event na minha função e passar o preventDefault que vai previnir a função padrão.
+            event.preventDefault();  
+
+    
+    Vamos ver aqui uma das formas mais tradicionais de anotar os inputs aqui dentro do React:
+    Eu crio um valor no estado ou seja um useSate para cada input que for feito.
+    Os inputs de texto iniciam com uma string vazia e os inputs numéricos iniciam com 0;
+    Também vou ter category que será um texto.
+
+                        const [title, setTitle] = useState('');
+                        const [value, setValue] = useState(0);
+                        const [category, setCategory] = useState('');
+
+    Após isso eu vou em cada input e vou passar a propriedade value passando exatamente o valor 
+    para aquele input e em seguida vou chamar um evento onChange passando um event que vai chamar 
+    uma função passando o set do meu estado que pega o evento e captura o valor com o target.
+        ex: 
+                    value={title} 
+                    onChange={event => setTitle(event.target.value)} 
+
+    Por padrão meu event.target vai retornar uma string e quando eu for usar em um campo numerico 
+    vai dá erro. por isso eu preciso converter para Number:
+            onChange={event => setValue(Number(event.target.value))} 
+                   ou assim 
+            onChange={event => setValue(+event.target.value)}
+
+    FEito isso eu posso testar no console do Browser para ver se está passando os valores digitados 
+    para testar eu posso dar um console dentro da minha função passando as propriedades:
+
+                                console.log({
+                                    title,
+                                    value, 
+                                    category, 
+                                    type,
+                                })
+
+
+
 
 */
