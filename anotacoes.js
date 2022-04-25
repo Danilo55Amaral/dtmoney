@@ -514,4 +514,75 @@ apenas no meu bacground.
     
 
 
+                LISTANDO TRANSAÇÕES E SEEDS  
+
+    Agora vamos pegar as transações dentro da API e listar na tela da aplicação, por padrão o nosso 
+    banco de dados irá iniciar sem dados, e para deixar a interface mais amigável podemos inserir alguns 
+    dados: 
+    dentro da minha api em main.tsx demtro de createServer eu vou utilizar o seeds essa função recebe 
+    uma propriedade chamada server e dentro dessa função eu vou executar server.db.loadData e dentro eu 
+    vou passar o transaction que é o nome da minha tabela que é o nome do model porém tem que ser no plural 
+    ou seja transactions, e vou devolver as transactions que eu quero iniciar.
+
+                        seeds(server) {
+                        server.db.loadData({
+                        transactions: [
+                            {
+                            id: 1,
+                            title: 'Freelance de website',
+                            type: 'deposit',
+                            category: 'Dev',
+                            amount: 6000,
+                            createdAt: new Date('2022-04-25 09:00:00'),
+                            },
+                            {
+                            id: 2,
+                            title: 'Aluguel',
+                            type: 'withdraw',
+                            category: 'Casa',
+                            amount: 1100,
+                            createdAt: new Date('2022-04-27 10:00:00'),
+                            }
+                        ],
+                        })
+                    },
+
+
+    Para renderizar meus dados em tela eu preciso dentro do TransactionaTable criar um estado 
+                    const [transactions, setTransactions] = useState([]); 
+
+    Vou iniciar meu estado com array vazio pois vou trazer meus dados em forma de array.
+    dentro do meu useEffect eu posso remover meu console log e chamar meu estado setado 
+    passando response.data
+                        setTransactions(response.data.transactions))
+    
+    Nas minhas tr do meu tbody vou excluir meus dados estaticos, dentro do meu tbody eu vou chamar 
+    meu transactions e vou passar um map que vai percorrer todo meu transaction e vai me retornar o 
+    conteudo.
+    {transactions.map(transaction => (
+                        <tr>
+                           <td>{transaction.title}</td>
+                           <td className="deposit">{transaction.amount}</td>
+                           <td>{transaction.category}</td>
+                           <td>{transaction.createdAt}</td>
+                       </tr>
+                    ))}
+
+    Por se tratar de um objeto eu preciso de forma obrigatória informar qual que é o tipo de 
+    formato no meu estado, para isso eu crio uma interface e tipo meus dados.
+                            interface Transaction {
+                                id: number,
+                                title: string,
+                                amount: number,
+                                type: string,
+                                category: string,
+                                createdAt: string;
+                            }
+
+    Após isso eu passo Transaction[] no meu useState: 
+                    const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+    como eu fiz um map eu preciso utilizar uma key isso é padrão no React,  nessa key eu 
+    coloco qual que é a informação unica para cada transaction.
+
 */
