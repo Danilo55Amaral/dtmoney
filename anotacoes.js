@@ -453,5 +453,65 @@ apenas no meu bacground.
 
 
 
+                INSERINDO TRANSAÇÃO NA API 
+
+    Vamos pegar os dados que estão sendo salvos e vamos enviar para nossa API, vou pegar esses 
+    dados e vou salvar numa variável chamada data.
+
+                                    const data = {
+                                        title,
+                                        value, 
+                                        category, 
+                                        type,
+                                    };
+
+    Vou chamar minha api e vou passar o metodo post para fazer uma inserção, vou passar a rota 
+    transaction, vou passar a minha variavel data que são os dados que serão inseridos,
+                    api.post('/transactions', data)
+
+    Se eu fizer apenas isso vai dar um erro de mireje no console  pois eu preciso ir no meu main.tsx
+    principal da minha aplicação e definir essa rota, ou seja precisamos de uma rota para lidar com esse
+    novo transaction.
+
+    Em baixo da rota de listagem dentro do main.tsx eu vou dar um this.post na rota transactions
+    vou receber alguns parametros, o schema e o request no momento vai ser utilizado apenas o request 
+    que são os dados que estão sendo enviados para a transaction, para conseguir obter esses dados 
+    eu vou obter a partir do request.requestBody esses dados por padrão são texto e como eu estou 
+    utilizando o JSON para enviar os dados eu vou precisar parsear esses dados, vou fazer isso convertendo 
+    esses dados para um objeto do tipo Json utilizando o parse, e isso irá me retornar os mesmos dados:
+
+                        this.post('/transactions', (schema, request) => {
+                        const data = JSON.parse(request.requestBody)
+
+                        return data
+                        }) 
+
+    O mirage tem um banco de dados interno que pode ser utilizado, para isso declaramos uma propriedade
+    chamada models, depois criamos o nome da primeira entidade que vamos salvar no nosso banco de dados 
+    no caso nessa aplicação vamos chamar de transaction, ele vai receber Model que importamos do mirajejs
+                        
+                        models: {
+                            transaction: Model,
+                        },
+
+    Na minha rota de criação eu vou retornar no lugar de data o echema que é o meu banco de dados 
+    vou passar o create e no primeiro paraqmetro eu vou passar qual que é o meu model que estou 
+    inserindo que aqui e p transaction e como segundo parametro eu vou passar os dados data.
+
+                            this.post('/transactions', (schema, request) => {
+                            const data = JSON.parse(request.requestBody)
+
+                            return schema.create('transaction', data)
+                            })
+
+    Na minha listagem eu vou apagar aquele objeto que fiz inicialmente e vou retornar 
+    this.schema.all('transaction') ou seja todas as transações que eu tenho no meu banco de dados:
+
+                            this.get('/transactions', () => {
+                            return this.schema.all('transactions') 
+                            })
+
+    
+
 
 */
