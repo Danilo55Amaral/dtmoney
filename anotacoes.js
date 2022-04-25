@@ -585,4 +585,24 @@ apenas no meu bacground.
     como eu fiz um map eu preciso utilizar uma key isso é padrão no React,  nessa key eu 
     coloco qual que é a informação unica para cada transaction.
 
+                            
+    
+    
+                        FORMATANDO OS VALORES DAS TRANSAÇÕES NA TABELA 
+
+        Para fazer essa formatação vamos utilizar uma api nativa do proprio Browser essa bilioteca
+        se chama Intl; o Style currency é para informar que quer no formato de moeda, BRL  é a moeda 
+        em real.
+
+                                {new Intl.NumberFormat('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }).format(transaction.amount)}
+    
+        Eu utilizo o .format passando o item que vou passar a formatação.
+        Na Data é bem parecido.
+        
+
+
+
 */
