@@ -601,6 +601,70 @@ apenas no meu bacground.
     
         Eu utilizo o .format passando o item que vou passar a formatação.
         Na Data é bem parecido.
+
+
+
+                                CONTEXTOS E HOOKS  
+
+        
+        Contexto é uma das funcionalidades mais utilizadas no React, antigamente se usava muito 
+        redux e o contexto consegue substituir o redux em quase tudo.
+
+        Prop drilling = é um problema no react que acontece quando se passa uma propriedade vários níveis 
+        para baixos , de componntes mais altos para componentes mais baixos, ou seja ficar passando pros 
+        a varios subniveis abaixo dentro do código.
+
+        Nesses casos em que é necessário passar um estado que é mais complexo geralmente se utiliza contexto
+        o contexto serve para compartilhamento de estado entre vários componentes da mesma aplicação 
+        independente de onde esses componentes estejam.
+        No contexto eu consigo acessar uma mesma  informação de vários componentes da aplicação independente 
+        de onde eles estajam.
+
+                                CONTEXT API REACT       
+
+        Eu crei um arquivo chamado TransactionContext.ts dentro desse arquivo eu importo de dentro do
+        react o createContext: 
+                                import { createContext } from "react";
+        
+        Eu crio uma constante para o meu contex e ela vai receber createContext com o valor que esse 
+        context vai inicializar, como vou iniciar com uma lista eu passei um vetor vazio.
+
+                            import { createContext } from "react";
+
+                            export const TransactionsContext = createContext([]);
+
+        PS- quando criamos um contexto no React conseguimos acessar esse contexto em qualquer lugar 
+        da nossa aplicação.
+
+        Provider
+
+        Para que qualquer componente da aplicação tenha acesso as informações desse contexto é 
+        necessário utilizar o Provider por volta desses componentes, esse provider vem de dentro 
+        do TransactionsContext.
+        
+        Como esse contexto vai ser acessado em boa parte dos componentes da aplicação eu posso pegar 
+        o Provider do meu TransactionsContext e colocar por volta de todo o meu app.tsx que é o meu 
+        componente que fica por volta de toda a aplicação.
+        Eu tenho um fragment dentro do meu App.tsx e posso tranquilamente substituir pelo 
+        meu TransactionsContext.Provider, porém apenas isso vai dar erro pois eu preciso também
+        passar um value que é o valor desse contexto, dentro desse valor eu passo o valor atual 
+        desse contexto.
+
+        PS- se eu quisesse que meu context fosse acessado por apenas alguns componetes especificos 
+        eu colocaria meu Provider apenas em volta desses componentes. 
+
+        Agora eu posso ir dentro do meu componnete Summary que eu quero ter acesso as transações para
+        calcular os valores, para obter os valores desse contexto dentro do meu componente eu vou utilizar 
+        um hook chamado useContext: 
+                                import React, { useContext } from 'react';  
+        Após isso eu crio uma constante e passo meu TransactionContext no useContext: 
+                                const data = useContext(TransactionsContext);
+
+        Vou fazer o mesmo também dentro do meu componente TransactionTable:
+        E basicamente todos os componentes que eu fizer isso vai ter acesso aos dados do meu context 
+        com isso sempre que os dados daquele contexto mudarem os componentes percebem essa mudança 
+        e faz uma nova renderização trazendo os novos dados assim como acontece em um estado.
+        
         
 
 
