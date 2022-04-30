@@ -920,6 +920,41 @@ apenas no meu bacground.
 
     
         
+                        CALCULANDO RESUMO
 
+    
+        Agora vamos calcular em tela os resultados de entrada e saida e o total das transações
+        Vamos dentro do componene summary que é o componente que vai receber essas informações.
+        Vou criar uma const chamada summary que vai receber transactions passando um reduce que
+        vai percorrer todas as transações e calcular um total, dentro do meu reduce eu vou ter 
+        um acc(acumulation) e vou ter transaction, vou iniciar com um objeto que vai ter meus valores 
+        iniciados em 0, depois eu vou testar usando um if, no  meu teste eu estou definindo que se 
+        for deposito eu vou no meu acc.deposit e vou somar ele com o valor de transaction.amount, e 
+        somando isso ao total,
+        se não vou pegar o acc. withdraws e somar com transaction.amount e no total eu vou subtrair.
+        essa função  me retorna acc. 
+        Depois eu vou chamar essa função no meu strong do html:
+
+                            const summary = transactions.reduce((acc, transaction) => {
+                            
+                            if (transaction.type == 'deposit') {
+                                acc.deposits += transaction.amount;
+                                acc.total += transaction.amount;
+                            } else {
+                                acc.withdraws += transaction.amount;
+                                acc.total -= transaction.amount;
+                            }
+
+                            return acc;
+                        }, {
+                            deposits: 0,
+                            withdraws: 0,
+                            total: 0,
+                        })
+
+    Feito isso vai está funcionando e calculando , só vou fazer agora a formatação de número.
+    Para isso eu vou utilizar a mesma formatação que usei na transactionTable e colocar aqui.
+    
+        
 
 */
