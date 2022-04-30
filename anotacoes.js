@@ -722,6 +722,109 @@ apenas no meu bacground.
         do meu context: vou fazer isso também dentro do meu summary:
                              const transactions = useContext(TransactionsContext);   
 
+
+                                
+                             
+                             MOVENDO CRIAÇÃO PARA O CONTEXT 
+
+    Agora que estamos utilizando o contexto vamos fazer com que cada transação que seja feita no 
+    modal aparecça na lista de transações quando a chamada API for feita.
+
+    Dentro do meu NewTransactionModal eu vou iportar também o useContext com isso podemos ver a 
+    vantagem do contexto por que eu posso acessar de qualquer lugar da aplicação; 
+    Vou passar o meu TransactionsContext dentro do meu useContext e também devo importar meu 
+    TransactionContext:
+                      import { TransactionsContext } from "../../TransactionContext";
+
+                                const transactions = useContext(TransactionsContext); 
+        
+    Com isso eu tenho acesso as Transactions dentro desse componente. 
+    Nessa aplicação vamo fazer algo bem interessante vou pegar toda a lógica de criar uma nova 
+    transaction eu vou colocar dentro do meu TransactionContext criando uma função.
+    Essa função vai receber transaction como parametro: 
+    eu posso excluir todo  meu data e na api substituir por transaction:
+
+                            function createTransaction(transaction) {
+                                api.post('/transactions', transaction)
+                            }
+
+    Para tipar esse transaction eu preciso criar mais uma interface vou chamar-la de TransactionInput
+    e nessa interface eu vou passar quais os dados que é necessário para criar uma transação:
+
+                            interface TransactionInput {
+                                title: string,
+                                amount: number,
+                                type: string,
+                                category: string,
+                                createdAt: string;
+                            }
+
+    Existe uma outra sintaxe do typeScript que também posso usar e fica bem mais legal e clean:
+    Assim eu leio: o TransactionInput vai herdar todos os campos de Transaction menos o id e o 
+    creadAt o Omit ele vai omitir o id e o creadAt.
+
+                            type TransactionInput = Omit<Transaction, 'id' | 'createdAt'>;
+
+    PS- O omit ele omite os campos que eu quero. 
+
+    Também posso usar o Pick que eu seleciono os campos que eu quero: 
+
+        type TransactionInput = Pick<Transaction, 'title' | 'amount' | 'type' | 'category'>;
+
+    Agora eu preiciso retornar a minha função createTransaction como value dentro do meu 
+    TransactionsContext.Provider e no javaScript quando eu quero que uma variavel tenha multiplos
+    valores eu posso utilizar um objeto e por isso meu value vai ficar com duas chaves {{}} uma 
+    indica que vai trazer códígo JavaSript e outra que vai retornar um objeto.
+    nesse objeto eu vou retornar transactio e também minha função createTransaction.
+                    <TransactionsContext.Provider value={{ transactions, createTransaction }}>
+    Vai da um erro por que dentro do meu createContext eu estou informando que vai ser retornado 
+    apenas uma lista de Transaction só que agora isso mudou pois eu vou ter uma lista de transactions 
+    e também uma função chamada createTransaction.
+    
+    Para resolver esse problema eu vou criar uma interface chamada TransactionsContextData 
+    o nome da interface pode ser qualquer nome, dentro dessa interface eu vou passar o 
+    conteudo que eu vou ter dentro do meu context:
+
+                        interface TransactionsContextData {
+                            transaction: Transaction[];
+                            createTransaction: (transaction: TransactionInput) => void;
+                        }
+
+    E vou substituir passando minha interface dentro do meu TransactionsContext: só que ao inves 
+    de retornar um array ele me retorna um objeto e quando passar essa informção vai dar um erro 
+    de tipagem, para corrgir esse problema eu forço uma tipagem utilizando as TransactionsContextData:
+
+                    export const TransactionsContext = createContext<TransactionsContextData>(
+                        {} as TransactionsContextData
+                    );
+
+    Note que dentro do meu TransactionsTable vai dar erro e para corrigr isso basta passar 
+    o meu transactions como obejto. Vou fazer isso dentro do componente summary também: 
+
+                   const { transactions } = useContext(TransactionsContext);
+         
+
+    Dentro do meu NewTransactionModal eu vou pegar de dentro do meu context somente a minha 
+    createTransactions:
+
+                const { createTransaction } = useContext(TransactionsContext); 
+                
+    Agora com a minha função createTransactions disponivel aqui eu vou chamar ela dentro de 
+    handleCreateNewTransaction passando meus dados como objeto:
+
+                        function handleCreateNewTransaction(event: FormEvent) {
+                            event.preventDefault();
+
+                            createTransaction({
+                                title,
+                                amount,
+                                category,
+                                type,
+                            })
+                        }
+
+    
+                        
         
         
 
