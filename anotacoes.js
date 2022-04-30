@@ -826,6 +826,99 @@ apenas no meu bacground.
     
                         
         
+                            FINALIZANDO INSERÇÃO   
+
+    Agora vamos adicionar a funcionalidade de quando cadastrar uma nova transação ela ser renderizada 
+    na tabela de tbm fechar o modal após o cadastro.
+    Dentro do meu componente NewTransactionModal para fechar o modal basta eu chamar o método 
+    onRequestClosed porém eu preciso fechar apenas quando a inserção de uma nova transação for 
+    feita e para isso vou passar um await(aguardar) onde eu estou chamando minha createTransaction 
+    porém para eu poder usar o await eu preciso transformas minha função em assinrona para isso basta 
+    eu colocar async antes da função dentro de Transactioncontext e tbm utilizar o await nela.
+    PS- toda função assincrona retorna uma promisse e por isso dentro da minha interface onde eu 
+    declaro essa função eu preciso informar utilizando Promise<void> ou seja ela retornar uma 
+    promise vazia.
+
+                        async function handleCreateNewTransaction(event: FormEvent) {
+                            event.preventDefault();
+
+                            await createTransaction({
+                                title,
+                                amount,
+                                category,
+                                type,
+                            })
+
+                            onRequestClose();
+                        }
+
+    Note que ele passa o onRequestClose(); quando eu utilizeo o await ele aguarda essa função 
+    ser executada e caso der tudo certo  ele vai executar o onRequestClose(); e fechar o modal.
+    Note que mesmo fechando o modal quando eu abrir novamente os valores vão está lá e por isso 
+    eu preciso resetar os valores.
+    Para isso basta eu setar os valores que eu quero que iniciem no meu modal dentro da função:
+
+    async function handleCreateNewTransaction(event: FormEvent) {
+        event.preventDefault();
+
+        await createTransaction({
+            title,
+            amount,
+            category,
+            type,
+        })
+
+        setTitle('');
+        setAmount(0);
+        setCategory('');
+        setType('deposit');
+        onRequestClose();
+    }
+
+    Agora eu preciso que esses dados cadastrados sejam renderizados em tela: para isso eu vou 
+    no meu TransactionContext: 
+    dentro da minha função createTransaction eu vou armazenar a aprte da api em uma constante 
+    que eu vou chamar de response(resposta) e vou acessar a minha transaction que vai receber 
+    response.data; para não ficar com nome igual eu vou trocar o meu parametro da função para 
+    transactionInput:
+
+                    async function createTransaction(transactionInput: TransactionInput) {
+                    const response = await api.post('/transactions', transactionInput)
+                    const { transaction } = response.data;
+                    }
+
+    Agora para colocar isso dentro do meu estado de transações eu vou passar o meu setTransactions 
+    vou copiar todas as informações que já estão la dentro ...transaction e em seguida eu adiciono 
+    as minhas novas informações no final, isso se chama conceito de imutabilidade no React.
+
+                    async function createTransaction(transactionInput: TransactionInput) {
+                    const response = await api.post('/transactions', transactionInput)
+                    const { transaction } = response.data;
+
+                    setTransactions([
+                        ...transactions,
+                        transaction,
+                    ]);
+                    }
+
+    Vai dar um erro por que eu precisp inserir o createdAt  para isso eu vou na minha função 
+    createTransaction e vou incluir pela propria requisição, eu passo um objeto eu passo todos 
+    os dados do meu transactionInput  e passo o createdAt como new date. 
+
+                    async function createTransaction(transactionInput: TransactionInput) {
+                    const response = await api.post('/transactions', {
+                        ...transactionInput,
+                        createdAt: new Date(),
+                    })
+                    const { transaction } = response.data;
+
+                    setTransactions([
+                        ...transactions,
+                        transaction,
+                    ]);
+                    }
+
+    
         
 
 
