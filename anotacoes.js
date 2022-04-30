@@ -954,7 +954,33 @@ apenas no meu bacground.
 
     Feito isso vai está funcionando e calculando , só vou fazer agora a formatação de número.
     Para isso eu vou utilizar a mesma formatação que usei na transactionTable e colocar aqui.
-    
+
+                        
+
+                        CRIANDO NOSSO PROPRIO HOOK 
+
+    Toda vez que for usar o TransactionContext em qualquer lugar da aplicação eu preciso importar
+    tanto o useContext quando o TransactionContext, só que agora eu vou reduzir essas duas importações 
+    em uma unica importação. 
+    Para isso eu vou criar uma pasta chamada hooks, após isso eu vou renomear o meu 
+    TransactionContext para useTransactions.tsx e vou mover ele para dentro da 
+    pasta hooks, e depois eu vou exportar uma function chamada userTransactions,
+    e dentro dessa função eu vou criar um context passando useContext que vai receber 
+    TransactionsContext como parametro, e essa função me retorna context;
         
+                export function useTransactions() {
+                const context = useContext(TransactionsContext);
+
+                return context;
+}
+
+    com isso eu não preciso mais importar o TransactionContext, apenas vou precisar importar p 
+    TransactionProvider no app.tsx e apenas o useTransactions qu eu vou impportar onde eu quiser
+    utilizar o meu hook de transações.
+
+    nos meus componentes eu posso remover essa importação e substituir no codigo 
+    por useTransactions().
+    removo a importação do useContext nao e mais necessária.
+
 
 */
