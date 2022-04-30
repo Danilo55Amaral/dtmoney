@@ -665,8 +665,65 @@ apenas no meu bacground.
         com isso sempre que os dados daquele contexto mudarem os componentes percebem essa mudança 
         e faz uma nova renderização trazendo os novos dados assim como acontece em um estado.
         
-        
+                                CARREGANDO TRANSAÇÕES  
 
+        Vamos carregar nossa lista de transações dentro do nosso context com isso podemos consumir esses 
+        dados nos componentes que quisermos, ou seja nessa aplicação o Summanry e o TransactionsTable vão 
+        acessar e consumir esses dados.
+        
+        Vou no meu TransactionContext e vou transformar em tsx para transforma-lo em um componente, vou criar
+        um conponente chamado TransactionsProvider e vou recortar de detro do meu TransactionTable o seguinte:
+                                
+                            const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+                            useEffect(() => {
+                                api.get('transactions')
+                                    .then(response => setTransactions(response.data.transactions))
+                            }, []);
+        
+        Vou colocar dentro do meu TransactionContext.tsx, também vou colocar minha interface do Transaction
+
+        Esse componente vai me retornar o TransactionsContext.Provide e nos componete ao invés de chamar essse
+        provide eu vou chamar o meu componente TransactionsProvide;
+                            return (
+                                <TransactionsContext.Provider value={transactions}>
+
+                                </TransactionsContext.Provider>
+                            )     
+                            
+        Ele vai dar um erro por que eu preciso informar que tipo de dados eu to exportanto dentro do 
+        meu TransactionsContext eu vou informar que to pssando  um array de Transaction <Transaction[]>
+                                export const TransactionsContext = createContext<Transaction[]>([]);
+        
+        PS- Com isso toda a lógica de carregamento de dados, vai ficar dentro desse provider especifico 
+        que eu criei em forma de componente, isso por que esses dados são especificos desse contexto de 
+        transações.
+
+        PS- Com isso eu vou no meu app.tsx e vou substituir meu Provider pelo TransactionsProvide.
+        PS- ele vai dar um erro pois eu preciso tipar esses dados , por isso dentro do meu arquivo 
+        TransactionContext eu vou criar uma interface e vou passar a propriedade children, vou passar 
+        para dentro desse children o ReactNode que aceita qualquer tipo de conteudo válido dentro do react
+        para eu utiliza-lo preciso importar de dentro do react.
+
+                                interface TransactionProviderProps {
+                                    children: ReactNode;
+                                }     
+                                
+        Após isso eu vou passar via props para meu componente; Posso também desestruturar e pegar
+        apenas o Childen que é o conteudo de dentro do componente.
+                                ({ children }: TransactionProviderProps)  
+            
+        Depois eu passo para meu provider:
+                            <TransactionsContext.Provider value={transactions}>
+                                {children}
+                            </TransactionsContext.Provider>
+        
+        Agora dentro do meu TransactionsTable eu posso pegar minhas transactions direto de dentro 
+        do meu context: vou fazer isso também dentro do meu summary:
+                             const transactions = useContext(TransactionsContext);   
+
+        
+        
 
 
 */
