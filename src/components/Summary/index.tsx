@@ -4,8 +4,6 @@ import outcomeImg from "../../assets/outcome.svg";
 import totalImg from "../../assets/total.svg";
 import { useTransactions } from "../../hooks/useTransactions";
 
-
-
 export function Summary() {
     const { transactions } = useTransactions();
 
