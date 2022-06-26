@@ -2,10 +2,10 @@
 O projeto dt money é um projeto de controle de finanças pessoais com cadastro de entradas e saídas financeiras por categoria, é um projeto que aborda muito das boas 
 práticas do front end, forma de organizar os componentes, boas práticas no html para pré carregamento. Esse projeto aborda vários conceitos do React como propriedades, estados, componentes, imutabilidade, de forma bem profissional e aprofundada.
 
-Esse projeto foi proposto pela trilha ignite da Rocketeseat. Construir o projeto utilizando as técnicas e habilidades práticas do agile software, utilizei as técnicas do Clean Code nesse projeto. 
+Esse projeto foi proposto pela trilha ignite da Rocketseat. Construir o projeto utilizando as técnicas e habilidades práticas do agile software, utilizei as técnicas do Clean Code nesse projeto. 
 
 # Tecnologias utilizadas
-- Esse projeto foi construido utilizando React 
+- Esse projeto foi construído utilizando React 
 - Utilizei o TypeScript
 - Utilizei vários conceitos React
 - Utilizei Styled-components 
